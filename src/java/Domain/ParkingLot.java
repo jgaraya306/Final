@@ -6,6 +6,7 @@
 package Domain;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  *
@@ -17,7 +18,7 @@ public class ParkingLot {
     private String name;
     private transient int numberOfSpaces;
     private ArrayList<Vehicle> vehicles;
-    private Space[] spaces;
+    private LinkedList<Space> spaces;
     private boolean ceiling;
 
     public ParkingLot() {
@@ -25,7 +26,7 @@ public class ParkingLot {
         //instanciamos e inicializamos los arreglos
         vehicles = new ArrayList<>();
         //hardcoded # de espacios
-        spaces = new Space[20];
+        spaces = new LinkedList<>();
 
     }
 
@@ -39,13 +40,23 @@ public class ParkingLot {
 //        this.ceiling = ceiling;
 //    }
     
-    public ParkingLot(int id,String name, int numberOfSpaces, Space[] spaces, boolean ceiling) {
+    public ParkingLot(int id,String name, int numberOfSpaces, LinkedList<Space> spaces, boolean ceiling) {
         this.id = id;
         this.name = name;
         this.numberOfSpaces = numberOfSpaces;
         this.spaces = spaces;
         this.ceiling = ceiling;
     }
+
+    public boolean isCeiling() {
+        return ceiling;
+    }
+
+    public void setCeiling(boolean ceiling) {
+        this.ceiling = ceiling;
+    }
+    
+    
 
     public int getId() {
         return id;
@@ -79,11 +90,11 @@ public class ParkingLot {
         this.vehicles = vehicles;
     }
 
-    public Space[] getSpaces() {
+    public LinkedList<Space> getSpaces() {
         return spaces;
     }
 
-    public void setSpaces(Space[] spaces) {
+    public void setSpaces(LinkedList<Space> spaces) {
         this.spaces = spaces;
     }
 

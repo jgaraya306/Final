@@ -83,7 +83,7 @@ public class ClerkLoginInfo extends HttpServlet {
         }
         if (exist == true) {
 
-            RequestDispatcher dispacher = request.getRequestDispatcher("FuncionesDeDependiente.jsp");
+            RequestDispatcher dispacher = request.getRequestDispatcher("DependentOptions.jsp");
             dispacher.forward(request, response);
         } else {
             RequestDispatcher dispacher = request.getRequestDispatcher("loginDependent.jsp");
@@ -91,7 +91,7 @@ public class ClerkLoginInfo extends HttpServlet {
 
         }
 
-        RequestDispatcher dispacher = request.getRequestDispatcher("show_info_customer.jsp");
+    
     }
 
     /**

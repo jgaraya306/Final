@@ -9,13 +9,10 @@ import Business.AdminBussines;
 import Domain.Administrator;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,18 +20,12 @@ import org.json.simple.parser.ParseException;
 
 /**
  *
- * @author juang
+ * @author Julio
  */
-@WebServlet(name = "AdminManagmentServlet", urlPatterns = {"/AdminManagmentServlet"})
-public class AdminManagmentServlet extends HttpServlet {
+public class AdministradorManagerServlet extends HttpServlet {
 
-    AdminBussines adminBussines;
+        AdminBussines adminBussines;
 
-    @Override
-    public void init() throws ServletException {
-        super.init(); //To change body of generated methods, choose Tools | Templates.
-        adminBussines = new AdminBussines();
-    }
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,6 +36,12 @@ public class AdminManagmentServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    @Override
+    public void init() throws ServletException {
+        super.init(); //To change body of generated methods, choose Tools | Templates.
+        adminBussines = new AdminBussines();
+    }
+        
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -53,10 +50,10 @@ public class AdminManagmentServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AdminManagmentServlet</title>");
+            out.println("<title>Servlet AdministradorManagerServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AdminManagmentServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AdministradorManagerServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -74,7 +71,7 @@ public class AdminManagmentServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+ response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
         if (action.equalsIgnoreCase("delete")) {
@@ -82,23 +79,24 @@ public class AdminManagmentServlet extends HttpServlet {
             String adminUsername = request.getParameter("adminUsername");
             try {
                 adminBussines.deleteAdmin(adminUsername);
+                
                 request.setAttribute("admins", adminBussines.getAllAdmins());
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher("show_all_admins.jsp");
                 requestDispatcher.forward(request, response);
             } catch (ParseException ex) {
-                Logger.getLogger(AdminManagmentServlet.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AdministradorManagerServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         } else if (action.equalsIgnoreCase("edit")) {
             try {
                 String adminUsername = request.getParameter("adminUsername");
-                Administrator administrator = new Administrator();
-                administrator = adminBussines.getAdministratorByUsername(adminUsername);
-                request.setAttribute("admin", administrator);
+                Administrator admin = new Administrator();
+                admin = adminBussines.getAdministratorByUsername(adminUsername);
+                request.setAttribute("admin", admin);
                 RequestDispatcher requestDispatcher = request.getRequestDispatcher("modify_administrator.jsp");//muestra cliente en el formulario
                 requestDispatcher.forward(request, response);
             } catch (ParseException ex) {
-                Logger.getLogger(AdminManagmentServlet.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AdministradorManagerServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         }
@@ -115,7 +113,7 @@ public class AdminManagmentServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
+ try {
             response.setContentType("text/html;charset=UTF-8");
             request.setCharacterEncoding("UTF-8");
             Administrator administrator = new Administrator();
@@ -124,15 +122,14 @@ public class AdminManagmentServlet extends HttpServlet {
             String username = request.getParameter("username");
             String password = request.getParameter("password");
             String identification = request.getParameter("id");
-//        Date date = null;
-//        HashMap schedule = null;
+
             administrator = new Administrator(identification, name, username, password, address);
             adminBussines.modifyAdmin(username, administrator);
             request.setAttribute("admins", adminBussines.getAllAdmins());
         } catch (ParseException ex) {
-            Logger.getLogger(AdminManagmentServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AdministradorManagerServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        RequestDispatcher dispatcher = request.getRequestDispatcher("show_all_adminis.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("show_all_admins.jsp");
         dispatcher.forward(request, response);
     }
 

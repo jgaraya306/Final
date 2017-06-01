@@ -154,6 +154,7 @@ public class AdminData {
             //Construct the new file that will later be renamed to the original filename. 
             File tempFile = new File("adminsTemp.json");
             BufferedReader bufferedReader = new BufferedReader(new FileReader(jsonFilePath));
+            
             try (PrintWriter printWriter = new PrintWriter(new FileWriter(tempFile))) {
                 String line = null;
                 //Read from the original file and write to the new
@@ -230,15 +231,17 @@ public class AdminData {
             FileReader fileReader = new FileReader(jsonFilePath);
             // Always wrap FileReader in BufferedReader.
             BufferedReader bufferedReader = new BufferedReader(fileReader);
+     
             while ((line = bufferedReader.readLine()) != null) {
                 jsonObject = (JSONObject) new JSONParser().parse(line);
                 if (jsonObject.get("username").toString().equals(username)) {
                     admin.setName(jsonObject.get("name").toString());
-                    admin.setIdentification(jsonObject.get("id").toString());
+                    admin.setIdentification(jsonObject.get("identification").toString());
                     admin.setAddress(jsonObject.get("address").toString());
                     admin.setUsername(jsonObject.get("username").toString());
                     admin.setPassword(jsonObject.get("password").toString());
                 }
+                
             }
             // Always close files.
             bufferedReader.close();

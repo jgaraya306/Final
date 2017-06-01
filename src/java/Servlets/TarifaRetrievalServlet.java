@@ -5,8 +5,8 @@
  */
 package Servlets;
 
-import Business.AdminBussines;
-import Domain.Administrator;
+import Business.TariffBusiness;
+import Domain.Tariff;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.LinkedList;
@@ -22,13 +22,13 @@ import org.json.simple.parser.ParseException;
 
 /**
  *
- * @author juang
+ * @author Julio
  */
-@WebServlet(name = "AdministratorRetrievelServlet", urlPatterns = {"/AdministratorRetrievelServlet"})
-public class AdministratorRetrievelServlet extends HttpServlet {
+@WebServlet(name = "TarifaRetrievalServlet", urlPatterns = {"/TarifaRetrievalServlet"})
+public class TarifaRetrievalServlet extends HttpServlet {
 
-    AdminBussines administratorBussines;
-    LinkedList<Administrator> admins;
+    TariffBusiness tariffBusiness;
+    LinkedList<Tariff> tariffs;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -47,10 +47,10 @@ public class AdministratorRetrievelServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AdministratorRetrievelServlet</title>");
+            out.println("<title>Servlet TarifaRetrievalServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AdministratorRetrievelServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet TarifaRetrievalServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -68,21 +68,34 @@ public class AdministratorRetrievelServlet extends HttpServlet {
     @Override
     public void init()
             throws ServletException {
-        administratorBussines = new AdminBussines();
-        admins = new LinkedList<>();
+
+        tariffBusiness = new TariffBusiness();
+        tariffs = new LinkedList<>();
 
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         try {
-            admins = administratorBussines.getAllAdmins();
+            response.setContentType("text/html;charset=UTF-8");
+            request.setCharacterEncoding("UTF-8");
+            
+            
+            tariffs = tariffBusiness.getAllTariff();
+            
+            
+            RequestDispatcher requestDispatcher
+                    = request.getRequestDispatcher("show_all_tariffs.jsp");
+            
+            request.setAttribute("tariffs", tariffs);
+            
+            requestDispatcher.forward(request, response);
         } catch (ParseException ex) {
-            Logger.getLogger(AdministratorRetrievelServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TarifaRetrievalServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (java.text.ParseException ex) {
+            Logger.getLogger(TarifaRetrievalServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        RequestDispatcher resquestDispacher = request.getRequestDispatcher("show_all_administrators.jsp");
-        request.setAttribute("admins", admins);
-        processRequest(request, response);
     }
 
     /**
@@ -96,8 +109,7 @@ public class AdministratorRetrievelServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-          response.setContentType("text/html;charset=UTF-8");
-        request.setCharacterEncoding("UTF-8");
+        processRequest(request, response);
     }
 
     /**

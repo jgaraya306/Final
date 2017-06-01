@@ -27,15 +27,7 @@ import org.json.simple.parser.ParseException;
 @WebServlet(name = "CustomerLoginInfo", urlPatterns = {"/CustomerLoginInfo"})
 public class CustomerLoginInfo extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -53,21 +45,15 @@ public class CustomerLoginInfo extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+       
+        
         String[] login = new String[2];
         boolean exist = false;
         login[0] = username;
@@ -85,11 +71,12 @@ public class CustomerLoginInfo extends HttpServlet {
             Logger.getLogger(CustomerLoginInfo.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (exist == true) {
-            RequestDispatcher dispacher = request.getRequestDispatcher("ReservarEspacio.jsp");
+            
+            RequestDispatcher dispacher = request.getRequestDispatcher("customersOptions.jsp");
+            request.setAttribute("username", username);
             dispacher.forward(request, response);
         } else {
-            //request.setAttribute(username, "Cuenta Erronea");
-            RequestDispatcher dispacher = request.getRequestDispatcher("loginDependent.jsp");
+            RequestDispatcher dispacher = request.getRequestDispatcher("loginCustomer.jsp");
             dispacher.forward(request, response);
 
         }

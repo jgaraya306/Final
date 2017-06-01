@@ -13,6 +13,7 @@ import Domain.Space;
 import Domain.VehicleType;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -78,11 +79,10 @@ public class ParkingManagmentServlet extends HttpServlet {
             String parkingLotName = request.getParameter("parkingLotName");
             try {
                 parkingLotBusiness.deleteParkingLots(parkingLotName);
-                 request.setAttribute("parkingLots", parkingLotBusiness.getAllParkingLots());
+                request.setAttribute("parkingLots", parkingLotBusiness.getAllParkingLots());
             } catch (ParseException ex) {
                 Logger.getLogger(ParkingManagmentServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-           
 
             RequestDispatcher dispatcher = request.getRequestDispatcher("show_all_parkingLots.jsp");
             dispatcher.forward(request, response);
@@ -93,13 +93,13 @@ public class ParkingManagmentServlet extends HttpServlet {
             ParkingLot parkingLot = new ParkingLot();
             try {
                 parkingLot = parkingLotBusiness.getParkingLotByName(parkingLotName);
-                
+
             } catch (ParseException ex) {
                 Logger.getLogger(ParkingManagmentServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             request.setAttribute("parkingLot", parkingLot);
-                RequestDispatcher dispatcher = request.getRequestDispatcher("modify_parkingLot.jsp");
-                dispatcher.forward(request, response);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("modify_parkingLot.jsp");
+            dispatcher.forward(request, response);
 
         }
     }
@@ -117,34 +117,22 @@ public class ParkingManagmentServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
-       
-        String name = request.getParameter("name");
-        int ID = Integer.parseInt(request.getParameter("ID"));
 
-        //   String parkingNumberOfSpaces = request.getParameter("parkingNumberOfSpaces");
-         // String name = request.getParameter("name");       
-            //boolean isCeiling = request.getParameter("ceiling").equalsIgnoreCase("yes");
-            int parkingNumberOfSpaces = Integer.parseInt(request.getParameter("numberOfSpaces"));
-            int numberOfSpaces = Integer.parseInt(request.getParameter("spacesDisability"));
-            int id = Integer.parseInt(request.getParameter("ID"));
-            
-            Space[] spaces = new Space[numberOfSpaces];
-            
-          // (int id, boolean disabilityAdaptation, boolean spaceTaken, VehicleType vehicleType)
-          vehicleType.setDescription("Heavy");
-          vehicleType.setFee((float) 2.4);
-          vehicleType.setId(1);
-          vehicleType.setNumberOfTires((byte)2);
-           spaces[0]=new Space(1,true,false,vehicleType);
-        // parkingLotBusiness.modifyParkingLot(name, parkingLot);
-         ParkingLot parkingLot = new ParkingLot(id,name, parkingNumberOfSpaces,spaces,true);
+        String name = request.getParameter("name");
+        int id = Integer.parseInt(request.getParameter("ID"));      
+        int numberOfSpaces = Integer.parseInt(request.getParameter("numberOfSpaces"));
+        boolean ceiling = (request.getParameter("ceiling").equals("true"));
+
+        LinkedList<Space> spaces = new LinkedList<>();
+       
+        ParkingLot parkingLot = new ParkingLot(id, name, numberOfSpaces, spaces, ceiling);
+    
         try {
-            parkingLotBusiness.modifyParkingLot(name,parkingLot);
-               request.setAttribute("parkingLots", parkingLotBusiness.getAllParkingLots());
+            parkingLotBusiness.modifyParkingLot(name, parkingLot);
+            request.setAttribute("parkingLots", parkingLotBusiness.getAllParkingLots());
         } catch (ParseException ex) {
             Logger.getLogger(ParkingManagmentServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-     
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("show_all_parkingLots.jsp");
         dispatcher.forward(request, response);

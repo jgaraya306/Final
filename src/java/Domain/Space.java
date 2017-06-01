@@ -11,19 +11,40 @@ package Domain;
  */
 public class Space {
 
+    private int idParking;
+    private int idCustomer;
     private int id;
     private boolean disabilityAdaptation;
     private boolean spaceTaken;
-    private VehicleType vehicleType;
+    private String vehicleType;
 
     public Space() {
     }
 
-    public Space(int id, boolean disabilityAdaptation, boolean spaceTaken, VehicleType vehicleType) {
+    public Space(int idParking, int id, boolean disabilityAdaptation, boolean spaceTaken, String vehicleType,int idCustomer) {
+        this.idParking = idParking;
         this.id = id;
         this.disabilityAdaptation = disabilityAdaptation;
         this.spaceTaken = spaceTaken;
         this.vehicleType = vehicleType;
+    }
+
+    public int getIdCustomer() {
+        return idCustomer;
+    }
+
+    public void setIdCustomer(int idCustomer) {
+        this.idCustomer = idCustomer;
+    }
+    
+    
+
+    public int getIdParking() {
+        return idParking;
+    }
+
+    public void setIdParking(int idParking) {
+        this.idParking = idParking;
     }
 
     public int getId() {
@@ -33,6 +54,8 @@ public class Space {
     public void setId(int id) {
         this.id = id;
     }
+
+
 
     public boolean isDisabilityAdaptation() {
         return disabilityAdaptation;
@@ -50,11 +73,11 @@ public class Space {
         this.spaceTaken = spaceTaken;
     }
 
-    public VehicleType getVehicleType() {
+    public String getVehicleType() {
         return vehicleType;
     }
 
-    public void setVehicleType(VehicleType vehicleType) {
+    public void setVehicleType(String vehicleType) {
         this.vehicleType = vehicleType;
     }
 

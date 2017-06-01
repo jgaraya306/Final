@@ -75,13 +75,27 @@ public class ParkingRetrievalServlet extends HttpServlet {
 
         try {
             parkingLots = parkingLotBusiness.getAllParkingLots();
+            String customerID = request.getParameter("idCustomer");
+            System.out.println("El id del customer es: "+customerID);
             
+            if (request.getParameter("reservarEspacio")!=null) {
+                String vehicleType = request.getParameter("type");
+                
+                RequestDispatcher requestDispatcher
+                        = request.getRequestDispatcher("parkingSelected.jsp");
+                request.setAttribute("parkingLots", parkingLots);
+                request.setAttribute("vehicleType", vehicleType);
+                request.setAttribute("customerID", customerID);
+                requestDispatcher.forward(request, response);
+            }else{
+
             RequestDispatcher requestDispatcher
                     = request.getRequestDispatcher("show_all_parkingLots.jsp");
-            
+
             request.setAttribute("parkingLots", parkingLots);
-            
             requestDispatcher.forward(request, response);
+            }
+            
         } catch (ParseException ex) {
             Logger.getLogger(ParkingRetrievalServlet.class.getName()).log(Level.SEVERE, null, ex);
         }

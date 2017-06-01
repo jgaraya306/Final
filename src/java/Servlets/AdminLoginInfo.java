@@ -74,7 +74,7 @@ public class AdminLoginInfo extends HttpServlet {
             exist = a1.userAdminExist(login);
 
             if (exist == true) {
-               RequestDispatcher dispacher = request.getRequestDispatcher("FuncionesDeAdministrador.jsp");
+               RequestDispatcher dispacher = request.getRequestDispatcher("AdminOptions.jsp");
                dispacher.forward(request, response);
            } else {
 

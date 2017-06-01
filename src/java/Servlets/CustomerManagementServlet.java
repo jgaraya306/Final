@@ -117,9 +117,9 @@ public class CustomerManagementServlet extends HttpServlet {
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
         String email = request.getParameter("email");
-//        boolean isDisabilityPresented = request.getParameter("disabilityPresented").equalsIgnoreCase("yes");
-//        boolean isGoldenCiticen = request.getParameter("goldenCiticen").equalsIgnoreCase("yes");
-        Customer customer = new Customer(ID, name, username, password, phone, email, true, address, false);
+        boolean isDisabilityPresented = request.getParameter("disabilityPresented").equalsIgnoreCase("true");
+        boolean isGoldenCiticen = request.getParameter("goldenCiticen").equalsIgnoreCase("true");
+        Customer customer = new Customer(ID, name, username, password, phone, email, isDisabilityPresented, address, isGoldenCiticen);
 
         try {
             customerBusiness.modifyCustomer(username, customer);
